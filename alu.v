@@ -93,7 +93,7 @@ begin
 				temp_res = opA + temp_opB;
 					
 				//check for flags
-				if (temp_res != 32'd0) //zero
+				if (temp_res[31:0] != 31'd0) //zero
 					begin
 					z = 1'b0;
 					end
@@ -101,7 +101,7 @@ begin
 					begin
 					z = 1'b1;
 					end
-				if (temp_res[32] == 1'b1) //carry out
+				if (opB > opA) //carry out
 					begin
 					c = 1'b1;
 					end
@@ -109,7 +109,7 @@ begin
 					begin
 					c = 1'b0;
 					end
-				if (temp_res[31] == temp_opB[31]) //overflow (if sign of opB is same as sign of temp_res there is overflow)
+				if ((opA[31]==opB[31])&&(opA[31]!=temp_res[31])&&(opB[31]!=temp_res[31])) //revised: condition copied from addition module
 					begin					 // Reference: Overflow rule of subtraction found in http://www.doc.ic.ac.uk/~eedwards/compsys/arithmetic/
 					v = 1'b1;
 					end
